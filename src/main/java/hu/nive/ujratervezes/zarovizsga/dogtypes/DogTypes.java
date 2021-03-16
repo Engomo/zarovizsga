@@ -1,4 +1,38 @@
 package hu.nive.ujratervezes.zarovizsga.dogtypes;
 
+import javax.sql.DataSource;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 public class DogTypes {
+
+    private DataSource dataSource;
+
+    public DogTypes(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public List<String> getDogsByCountry(String country) {
+        List<String> result = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+                PreparedStatement stmt = conn.prepareStatement("select name from dog_types where country = (?) order by name")) {
+
+            stmt.setString(1, country.toUpperCase());
+            addDogNameToList(result, stmt);
+
+        } catch (SQLException sqle) {
+            throw new IllegalArgumentException("Error by insert", sqle);
+        }
+        return result;
+    }
+
+    private void addDogNameToList(List<String> result, PreparedStatement stmt) throws SQLException {
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                result.add(rs.getString("name").toLowerCase());
+            }
+        }
+    }
 }

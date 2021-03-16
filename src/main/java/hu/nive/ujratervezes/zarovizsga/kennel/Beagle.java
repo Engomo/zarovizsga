@@ -1,18 +1,18 @@
 package hu.nive.ujratervezes.zarovizsga.kennel;
 
-public class Husky extends Dog{
+public class Beagle extends Dog{
 
-    public Husky(String name) {
+    public Beagle(String name) {
         super(name);
     }
 
     @Override
     public void feed() {
-        super.happiness += 4;
+        super.happiness += 2;
     }
 
     @Override
     public void play(int hours) {
-        super.happiness += (hours * 3);
+        super.happiness += (hours * 2);
     }
 }

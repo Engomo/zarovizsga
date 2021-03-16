@@ -22,7 +22,7 @@ public class Kennel {
             if(dog.getName().equals(name)) {
                 return dog;
             }
-        }throw new IllegalArgumentException("Cannot find dog!");
+        }throw new IllegalArgumentException("Cannot find this dog!");
     }
 
     public void playWith(String name, int hours) {
