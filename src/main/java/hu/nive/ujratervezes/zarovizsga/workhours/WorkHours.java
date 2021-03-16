@@ -10,30 +10,27 @@ import java.util.List;
 public class WorkHours {
 
     public String minWork(String file) {
-    try (BufferedReader reader = Files.newBufferedReader(Path.of(file))) {
-        String line;
-        List<Integer> workHours = new ArrayList<>();
-        int minWorkHour = selectMinWorkHours(reader, workHours);
-
-    } catch (IOException e) {
-        throw new IllegalStateException("Cannot read file!", e);
-    }
-    return "John Doe: 2021-01-04";
-    }
-
-    private int selectMinWorkHours(BufferedReader reader, List<Integer> workHours) throws IOException {
-        String line;
-        while((line = reader.readLine()) != null) {
-            String[] temp = line.split(",");
-            workHours.add(Integer.parseInt(temp[2]));
+        Path path = Path.of(file);
+        try (BufferedReader reader = Files.newBufferedReader(path)) {
+            return selectMinWorkHours(reader);
+        } catch (IOException e) {
+            throw new IllegalStateException("Cannot read file!", e);
         }
+    }
+
+    private String selectMinWorkHours(BufferedReader reader) throws IOException {
         int min = Integer.MAX_VALUE;
-        for (int i : workHours) {
-            if (i < min) {
-                min = i;
+        String line;
+        StringBuilder minWork = new StringBuilder();
+        while ((line = reader.readLine()) != null) {
+            String[] temp = line.split(",");
+            int work = Integer.parseInt(temp[1]);
+            if (work < min) {
+                min = work;
+                minWork = new StringBuilder();
+                minWork.append(temp[0]).append(": ").append(temp[2]);
             }
         }
-        return min;
+        return minWork.toString();
     }
-
 }
